@@ -17,7 +17,6 @@ v1 - 20181120
 
 """
 from scipy import signal
-from numpy import mean
 
 def pason_post_processing(t,sig):
     """
@@ -65,51 +64,5 @@ def pason_post_processing(t,sig):
 
     # set the first value equal to the second value to make the line look nice
     sig_4[0] = sig_4[1]
-    
-    # (5) calculate mean over each 1 sec period
-    t_5 = [t_3[0]]
-    sig_5 = [0]
-    counter = 0
-    for i in range(len(t_3)):
-        if counter == 5:
-            t_5.append(t_3[i])
-            sig_5.append(mean(sig_3[i-5:i]))
-            counter = 0
 
-        counter += 1
-    # set the first value equal to the second value to make the line look nice
-    sig_5[0] = sig_5[1]
-    
-    # (6) calculate min over each 1 sec period
-    t_6 = [t_3[0]]
-    sig_6 = [0]
-    counter = 0
-    for i in range(len(t_3)):
-        if counter == 5:
-            t_6.append(t_3[i])
-            sig_6.append(min(sig_3[i-5:i]))
-            counter = 0
-
-        counter += 1
-
-    # set the first value equal to the second value to make the line look nice
-    sig_6[0] = sig_6[1]
-
-    # (7) calculate min over each 1 sec period
-    t_7 = [t_3[0]]
-    sig_7 = [0]
-    counter = 0
-    for i in range(len(t_3)):
-        if counter == 5:
-            t_7.append(t_3[i])
-            sig_7.append(sig_3[i])
-            counter = 0
-
-        counter += 1
-
-    # set the first value equal to the second value to make the line look nice
-    sig_7[0] = sig_7[1]
-    
-    # return t_3, sig_3, t_2, sig_2, t_1, sig_1
-    # return [t_7, sig_7, t_6, sig_6, t_5, sig_5, t_4, sig_4, t_3, sig_3, t_2, sig_2, t_1, sig_1]
     return t_4, sig_4
