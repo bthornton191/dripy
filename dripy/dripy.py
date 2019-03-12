@@ -146,7 +146,7 @@ class PasonData():
         'rop' : ['rate_of_penetration'],
         'rpm' : ['rotary_rpm'],
         'wob' : ['weight_on_bit'],
-        'flow' : ['total_pump_output']
+        'gpm' : ['total_pump_output']
     }
 
     def __init__(self, filename):
