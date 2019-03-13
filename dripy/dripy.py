@@ -2,7 +2,9 @@
 
 """
 import re
-from scipy import signal
+from thornpy.signal import low_pass
+from scipy.signal import resample, find_peaks
+from numpy import gradient, absolute, mean, std
 import pandas as pd
 
 def pason_post_processing(t, sig):
@@ -31,13 +33,7 @@ def pason_post_processing(t, sig):
 
     def sample(sig, time, freq_samp):                
         num = int((time[-1] - time[0])*freq_samp + 1)
-        return signal.resample(sig,num,t)        
-
-    def low_pass(sig, time, freq_cutoff):
-        freq_samp = 1/(time[1]-time[0])
-        omega = freq_cutoff/freq_samp*2
-        b_coef, a_coef = signal.butter(5, omega)
-        return list(signal.filtfilt(b_coef, a_coef, sig)), time
+        return resample(sig,num,t)        
 
     def maximum(sig, time, period):  
         # Number of samples to between taking each maximum
@@ -149,6 +145,12 @@ class PasonData():
         'gpm' : ['total_pump_output']
     }
 
+    SETPOINT_FILTER_CUTOFF = .1
+
+    # Prominence and width thresholds for peakfinder
+    # NOTE: Smaller numbers = more peaks
+    SETPOINT_SIGMA = 4
+
     def __init__(self, filename):
         """Initilizes the PasonData object.
         
@@ -161,7 +163,7 @@ class PasonData():
         self.filname = filename
         self.wob = []
         self.rpm = []
-        self.flow = []
+        self.gpm = []
         self.torque = []
         self.md = []
         self.rop = []
@@ -202,4 +204,58 @@ class PasonData():
         
         # Rename the columns
         self.data.rename(index=str, columns=name_map, inplace=True)
+    
+    def get_setpoints(self, signal_type, show_plot=True):
+        """Gets the setpoints from the rpm or gpm Pason signals.
+
+        Notes
+        -----
+        This method is experimental.  It is highly recommended to set `show_plot=True` to visually confirm that the extracted setpoints are sensible. This method has been tested on rpm and gpm signals only.  It has not been tested on other types of Pason signals.      
+
+        Setting `show_plot=True` will halt execution until the figure window is closed.
+
+        Parameters
+        ----------
+        signal_type : str
+            'rpm' or 'gpm'
+        show_plot : bool, optional
+            If True, shows a plot of the resulting setpoints (the default is True, which [default_description])        
         
+        Returns
+        -------
+        list
+            List of tuples where each tuple contains the setpoint time and setpoint value.
+        
+        """
+        if signal_type not in self.data:
+            raise ValueError('signal_type must be a key in self.data')
+
+        signal = self.data[signal_type]
+
+        # Apply a lowpass filter
+        filt_sig, _filt_time = low_pass(signal, self.time, self.SETPOINT_FILTER_CUTOFF)
+
+        # Take the derivative of the filtered signal
+        deriv_sig = absolute(gradient(filt_sig))
+
+        # Get the n sigma value of the derivative
+        n_sigma = std(deriv_sig)*self.SETPOINT_SIGMA
+
+        # Find the peaks of the derivative
+        peaks, _props = find_peaks(deriv_sig, height=n_sigma, prominence=n_sigma)
+
+        # Use the peaks to get the setpoint time and value
+        def reject_outliers(data, m=1):
+            return [d for d in data if abs(d - mean(data)) < m * std(data)]
+        set_points = [(self.time[peak], mean(reject_outliers(signal[peak:next_peak]))) for peak, next_peak in zip([0]+list(peaks), list(peaks)+[len(self.time)])]
+
+        # Show a plot for confirmation
+        if show_plot:
+            self.plt.plot(self.time, signal)
+            # cls.plt.plot(self.time, deriv_sig)
+            # cls.plt.plot([self.time[peak] for peak in peaks], [signal[peak] for peak in peaks], linestyle='None', marker='.', markersize=10)       
+            for sp, next_sp in zip(set_points, set_points[1:] + [(self.time[-1], set_points[-1][1])]):
+                self.plt.plot([sp[0], next_sp[0]], [sp[1], sp[1]], linewidth=3)  
+            self.plt.show()
+
+        return set_points

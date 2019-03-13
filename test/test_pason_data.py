@@ -35,6 +35,31 @@ class Test_PasonData(unittest.TestCase):
         rpm = self.pason_data.data['rotary_rpm'][2000:2010].values
         self.assertListEqual(list(rpm), TEST_EXPECTED_PASON_RPM)
         
+    def test_get_gpm_setpoints(self):
+        """Tests the `PasonData.get_setpoints` method.
+        
+        """
+        set_points = self.pason_data.get_setpoints('gpm', show_plot=False)    
+        self.assertListEqual(set_points, TEST_EXPECTED_GPM_SETPOINTS)
+        
+    def test_get_rpm_setpoints(self):
+        """Tests the `PasonData.get_setpoints` method.
+        
+        """
+        set_points = self.pason_data.get_setpoints('rpm', show_plot=False)        
+        self.assertListEqual(set_points, TEST_EXPECTED_RPM_SETPOINTS)
+
+    def test_get_setpoints_bad_input(self):
+        """Tests the `PasonData.get_setpoints` method.
+        
+        """
+        error_msg = None        
+        try:
+            set_points = self.pason_data.get_setpoints('xxx', show_plot=False)       
+        except ValueError as err:            
+            error_msg = err.args[0]        
+        self.assertEqual(error_msg,'signal_type must be a key in self.data')             
+
     def tearDown(self):
         return
     
