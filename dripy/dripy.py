@@ -151,6 +151,9 @@ class PasonData():
     # NOTE: Smaller numbers = more peaks
     SETPOINT_SIGMA = 4
 
+    # Maximum exptected decimals in timestamp seconds
+    MAX_TIME_DEC = 2
+
     def __init__(self, filename):
         """Initilizes the PasonData object.
         
@@ -175,7 +178,11 @@ class PasonData():
         self.data = pd.read_csv(filename, sep=',', parse_dates=[[0,1]])
 
         # Create a time series and attribute and set it as the index
-        self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()        
+        self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()  
+        
+        # Round the time signal to get rid of random decimals
+        self.data['time'].round(self.MAX_TIME_DEC)      
+        
         self.time = list(self.data['time'].values)
         self.units['time'] = 'sec'
         self.data.set_index('time', inplace=True)
@@ -219,7 +226,7 @@ class PasonData():
         signal_type : str
             'rpm' or 'gpm'
         show_plot : bool, optional
-            If True, shows a plot of the resulting setpoints (the default is True, which [default_description])        
+            If True, shows a plot of the resulting setpoints (the default is True)        
         
         Returns
         -------
@@ -258,4 +265,4 @@ class PasonData():
                 self.plt.plot([sp[0], next_sp[0]], [sp[1], sp[1]], linewidth=3)  
             self.plt.show()
 
-        return set_points
+        return set_points[:-1]

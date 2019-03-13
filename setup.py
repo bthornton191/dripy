@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dripy",
-    version="0.0.7",
+    version="0.0.8",
     author="Ben Thornton",
     author_email="ben.thornton@mscsoftware.com",
     description="Python tools for working with drilling data",
@@ -18,5 +18,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: Microsoft :: Windows",
     ],
-    install_requires = ['scipy', 'pandas']
+    install_requires = ['scipy', 'pandas', 'matplotlib', 'thornpy', 'numpy']
 )
