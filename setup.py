@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dripy",
-    version="0.0.9",
+    version="0.0.10",
     author="Ben Thornton",
     author_email="ben.thornton@mscsoftware.com",
     description="Python tools for working with drilling data",

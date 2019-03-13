@@ -265,4 +265,5 @@ class PasonData():
                 self.plt.plot([sp[0], next_sp[0]], [sp[1], sp[1]], linewidth=3)  
             self.plt.show()
 
-        return set_points[:-1]
+        return set_points
+        
