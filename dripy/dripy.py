@@ -181,9 +181,9 @@ class PasonData():
         self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()  
         
         # Round the time signal to get rid of random decimals
-        self.data['time'].round(self.MAX_TIME_DEC)      
+        self.data['time']      
         
-        self.time = list(self.data['time'].values)
+        self.time = list(self.data['time'].round(decimals=self.MAX_TIME_DEC).values)
         self.units['time'] = 'sec'
         self.data.set_index('time', inplace=True)
 
