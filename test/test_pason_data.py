@@ -1,4 +1,5 @@
 import unittest
+from numpy import argmax
 from test import *
 from dripy.dripy import PasonData
 
@@ -25,14 +26,14 @@ class Test_PasonData(unittest.TestCase):
         """Tests that the 'rpm' entry in the `data` dictionary returns expected values.
         
         """
-        rpm = self.pason_data.data['rpm'][2000:2010].values
+        rpm = self.pason_data.data['rpm'].values[2000:2010]
         self.assertListEqual(list(rpm), TEST_EXPECTED_PASON_RPM)
     
     def test_pason_rpm_data_csv_name(self):
         """Tests that the 'rotary_rpm' entry in the `data` returns expected values.
         
         """
-        rpm = self.pason_data.data['rotary_rpm'][2000:2010].values
+        rpm = self.pason_data.data['rotary_rpm'].values[2000:2010]
         self.assertListEqual(list(rpm), TEST_EXPECTED_PASON_RPM)
         
     def test_get_gpm_setpoints(self):
@@ -55,10 +56,20 @@ class Test_PasonData(unittest.TestCase):
         """
         error_msg = None        
         try:
-            set_points = self.pason_data.get_setpoints('xxx', show_plot=False)       
+            _set_points = self.pason_data.get_setpoints('xxx', show_plot=False)       
         except ValueError as err:            
             error_msg = err.args[0]        
-        self.assertEqual(error_msg,'signal_type must be a key in self.data')             
+        self.assertEqual(error_msg,'signal_type must be a key in self.data')       
+
+    def test_get_time_index(self):
+        """Tests getting the index of a particular time value in `pason_data.data['time']`.
+        
+        """
+        t_min = 100
+        i_min = argmax(self.pason_data.data.index>=t_min)
+        expected_i_min = 100
+
+        self.assertEqual(i_min, expected_i_min)
 
     def tearDown(self):
         return

@@ -208,9 +208,13 @@ class PasonData():
                         # If the column name contains units
                         # Add to the units dictionary
                         self.units[var] = unit[0]  
+                    
+                    # Break from loop if a match is found.
+                    # NOTE: The left-most column in the pason dataset will be used
+                    break
         
         # Rename the columns
-        self.data.rename(index=str, columns=name_map, inplace=True)
+        self.data.rename(columns=name_map, inplace=True)
     
     def get_setpoints(self, signal_type, show_plot=True):
         """Gets the setpoints from the rpm or gpm Pason signals.
@@ -253,12 +257,12 @@ class PasonData():
 
         # Use the peaks to get the setpoint time and value
         def reject_outliers(data, m=1):
-            return [d for d in data if abs(d - mean(data)) < m * std(data)]
-        set_points = [(self.time[peak], mean(reject_outliers(signal[peak:next_peak]))) for peak, next_peak in zip([0]+list(peaks), list(peaks)+[len(self.time)])]
+            return [d for d in data if abs(d - mean(data)) < m*std(data) or std(data)==0]
+        set_points = [(self.time[peak], mean(reject_outliers(signal[peak+1:next_peak-1]))) for peak, next_peak in zip([0]+list(peaks), list(peaks)+[len(self.time)])]
 
         # Show a plot for confirmation
         if show_plot:
-            self.plt.plot(self.time, signal)
+            self.plt.plot(self.time, signal, linewidth=1, marker='.', markersize=3)
             # cls.plt.plot(self.time, deriv_sig)
             # cls.plt.plot([self.time[peak] for peak in peaks], [signal[peak] for peak in peaks], linestyle='None', marker='.', markersize=10)       
             for sp, next_sp in zip(set_points, set_points[1:] + [(self.time[-1], set_points[-1][1])]):
