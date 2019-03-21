@@ -198,23 +198,31 @@ class PasonData():
                 # If the column name contains units
                 # Add to the units dictionary
                 self.units[new_col_name] = unit[0]
-
-            # Check if the current column name matches any standard variables
-            for var, expct_col_nms in self.STANDARD_SIGNALS.items():
-                if new_col_name in expct_col_nms:
-                    self.data[var] = self.data[col_name]
-                    self.__dict__[var] = list(self.data[col_name].values)
-                    if unit:
-                        # If the column name contains units
-                        # Add to the units dictionary
-                        self.units[var] = unit[0]  
-                    
-                    # Break from loop if a match is found.
-                    # NOTE: The left-most column in the pason dataset will be used
-                    break
         
         # Rename the columns
         self.data.rename(columns=name_map, inplace=True)
+        
+        # Extract standard variables
+        for var, expct_col_nms in self.STANDARD_SIGNALS.items():
+            # For each standard variable
+
+            for expct_col_nm in expct_col_nms:
+                # For each possible pason column name representing the standard variable
+
+                if expct_col_nm in self.data:
+                    # If the column name is in the pason data set, copy 
+                    # that column to a new dict entry and create
+                    # an instance attribute for it.
+                    self.data[var] = self.data[expct_col_nm]
+                    self.__dict__[var] = list(self.data[expct_col_nm].values)
+
+                    if expct_col_nm in self.units:
+                        # If the column has units, add to the units dict
+                        self.units[var] = self.units[expct_col_nm]
+                    
+                    # Break the loop if a match is found
+                    # NOTE: The first name in the self.STANDARD_SIGNALS[var] list will be used
+                    break
     
     def get_setpoints(self, signal_type, show_plot=True):
         """Gets the setpoints from the rpm or gpm Pason signals.

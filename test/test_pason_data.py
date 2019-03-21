@@ -7,6 +7,13 @@ class Test_PasonData(unittest.TestCase):
 
     def setUp(self):
         self.pason_data = PasonData(TEST_PASON_DATA)        
+    
+    def test_pason_torque(self):
+        """Tests that the torque attribute returns expected values.  This test is important becauase the pason data set has two torque columns and the PasonData class needs to pick the one that comes first in the PasonData.STANDARD_VARIABLES['torque'] list.        
+        
+        """
+        torque = self.pason_data.torque[299:310]
+        self.assertListEqual([round(t,2) for t in torque], [round(t,2) for t in TEST_EXPECTED_PASON_TORQUE])
 
     def test_pason_time(self):
         """Tests that the time attribute returns expected values.
