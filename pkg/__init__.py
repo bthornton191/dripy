@@ -1,6 +1,6 @@
 # ---------------------
-version = '0.1.1'
-version_notes = 'added documentation'
+version = '0.1.2'
+version_notes = 'fixed documentation'
 date = 'August 2nd, 2019'
 # ---------------------
 author = 'Ben Thornton'
