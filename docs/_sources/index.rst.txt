@@ -27,7 +27,9 @@ You can do a direct install via pip by using:
    :maxdepth: 2
    :caption: Contents:
 
-
+Contribute
+==================
+- Source Code: https://github.com/bthornton191/dripy
 
 Indices and tables
 ==================
