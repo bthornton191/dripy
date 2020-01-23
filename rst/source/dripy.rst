@@ -12,6 +12,22 @@ dripy.dripy module
    :undoc-members:
    :show-inheritance:
 
+dripy.lodestar module
+---------------------
+
+.. automodule:: dripy.lodestar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dripy.pason module
+------------------
+
+.. automodule:: dripy.pason
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 dripy.survey module
 -------------------
 

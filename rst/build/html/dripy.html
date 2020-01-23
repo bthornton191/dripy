@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dripy package &mdash; dripy 0.1.4 documentation</title>
+  <title>dripy package &mdash; dripy 0.2 documentation</title>
   
 
   
@@ -83,7 +83,9 @@
 <li><a class="reference internal" href="#">dripy package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-dripy.dripy">dripy.dripy module</a></li>
-<li><a class="reference internal" href="#module-dripy.survey">dripy.survey module</a></li>
+<li><a class="reference internal" href="#module-dripy.lodestar">dripy.lodestar module</a></li>
+<li><a class="reference internal" href="#module-dripy.pason">dripy.pason module</a></li>
+<li><a class="reference internal" href="#dripy-survey-module">dripy.survey module</a></li>
 <li><a class="reference internal" href="#module-dripy">Module contents</a></li>
 </ul>
 </li>
@@ -159,20 +161,115 @@
 <div class="section" id="module-dripy.dripy">
 <span id="dripy-dripy-module"></span><h2>dripy.dripy module<a class="headerlink" href="#module-dripy.dripy" title="Permalink to this headline">¶</a></h2>
 <p>Module for working with drilling data.</p>
+<dl class="function">
+<dt id="dripy.dripy.las_to_excel">
+<code class="sig-prename descclassname">dripy.dripy.</code><code class="sig-name descname">las_to_excel</code><span class="sig-paren">(</span><em class="sig-param">las_file_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/dripy.html#las_to_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.dripy.las_to_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a .las file to a .xlsx file. Creates a .xlsx file with the same name (different extension) as the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>las_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Filepath to data in .las format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dripy.lodestar">
+<span id="dripy-lodestar-module"></span><h2>dripy.lodestar module<a class="headerlink" href="#module-dripy.lodestar" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="dripy.dripy.PasonData">
-<em class="property">class </em><code class="sig-prename descclassname">dripy.dripy.</code><code class="sig-name descname">PasonData</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/dripy.html#PasonData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.dripy.PasonData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dt id="dripy.lodestar.LodeStarData">
+<em class="property">class </em><code class="sig-prename descclassname">dripy.lodestar.</code><code class="sig-name descname">LodeStarData</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">stack_order=None</em>, <em class="sig-param">date_parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/lodestar.html#LodeStarData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.lodestar.LodeStarData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="dripy.lodestar.LodeStarData.MAX_TIME_DEC">
+<code class="sig-name descname">MAX_TIME_DEC</code><em class="property"> = 4</em><a class="headerlink" href="#dripy.lodestar.LodeStarData.MAX_TIME_DEC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dripy.lodestar.LodeStarData.STANDARD_SIGNALS">
+<code class="sig-name descname">STANDARD_SIGNALS</code><em class="property"> = {'moment': ['bobmag'], 'rpm': ['rpmacc'], 'torque': ['tob'], 'wob': ['wob']}</em><a class="headerlink" href="#dripy.lodestar.LodeStarData.STANDARD_SIGNALS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dripy.lodestar.LodeStarData.slice_at_indices">
+<code class="sig-name descname">slice_at_indices</code><span class="sig-paren">(</span><em class="sig-param">i_start</em>, <em class="sig-param">i_end</em>, <em class="sig-param">shift_time=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/lodestar.html#LodeStarData.slice_at_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.lodestar.LodeStarData.slice_at_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>:class:LodeStarData</cite> object sliced at the provided times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to start the slice at.</p></li>
+<li><p><strong>i_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to end the slice at.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sliced <cite>:class:LodeStarData</cite> object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dripy.lodestar.LodeStarData" title="dripy.lodestar.LodeStarData">LodeStarData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="dripy.lodestar.LodeStarData.slice_at_times">
+<code class="sig-name descname">slice_at_times</code><span class="sig-paren">(</span><em class="sig-param">t_start</em>, <em class="sig-param">t_end</em>, <em class="sig-param">shift_time=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/lodestar.html#LodeStarData.slice_at_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.lodestar.LodeStarData.slice_at_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>:class:LodeStarData</cite> object sliced at the provided times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Time to start the slice at.</p></li>
+<li><p><strong>t_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Time to end the slice at.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sliced <cite>:class:LodeStarData</cite> object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dripy.lodestar.LodeStarData" title="dripy.lodestar.LodeStarData">LodeStarData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="dripy.lodestar.combine_with_pason">
+<code class="sig-prename descclassname">dripy.lodestar.</code><code class="sig-name descname">combine_with_pason</code><span class="sig-paren">(</span><em class="sig-param">lodestar_dataframe</em>, <em class="sig-param">pason_dataframe</em>, <em class="sig-param">pickle_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/lodestar.html#combine_with_pason"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.lodestar.combine_with_pason" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine a pandas <cite>:obj:DataFrame</cite> containing Lodestar data with a pandas <cite>:obj:DataFrame</cite> containing Pason Data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lodestar_dataframe</strong> (<em>DataFrame</em>) – pandas <cite>:obj:DataFrame</cite> containing Lodestar data</p></li>
+<li><p><strong>pason_dataframe</strong> (<em>DataFrame</em>) – pandas <cite>:obj:DataFrame</cite> containing Pason Data.</p></li>
+<li><p><strong>pickle_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> (</em><em>Optional</em><em>)</em>) – If given, resulting dataframe will be pickled.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Compined pandas <cite>:obj:DataFrame</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dripy.pason">
+<span id="dripy-pason-module"></span><h2>dripy.pason module<a class="headerlink" href="#module-dripy.pason" title="Permalink to this headline">¶</a></h2>
+<p>Module for working with Pason Data</p>
+<dl class="class">
+<dt id="dripy.pason.PasonData">
+<em class="property">class </em><code class="sig-prename descclassname">dripy.pason.</code><code class="sig-name descname">PasonData</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">date_parser=None</em>, <em class="sig-param">motor_factor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Object representing a Pason dataset.</p>
 <p class="rubric">Examples</p>
-<p>Referring to the rpm by the <a class="reference internal" href="#dripy.dripy.PasonData.rpm" title="dripy.dripy.PasonData.rpm"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rpm</span></code></a> attribute</p>
+<p>Referring to the rpm by the <a class="reference internal" href="#dripy.pason.PasonData.rpm" title="dripy.pason.PasonData.rpm"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rpm</span></code></a> attribute</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;pason.csv&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pason_data</span> <span class="o">=</span> <span class="n">PasonData</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pason_data</span><span class="o">.</span><span class="n">rpm</span><span class="p">[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">1002</span><span class="p">]</span>
 <span class="go">[84.95, 83.89]</span>
 </pre></div>
 </div>
-<p>Refering to the rpm by the standard signal name ‘rpm’ in the <a class="reference internal" href="#dripy.dripy.PasonData.data" title="dripy.dripy.PasonData.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code></a> attribute.</p>
+<p>Refering to the rpm by the standard signal name ‘rpm’ in the <a class="reference internal" href="#dripy.pason.PasonData.data" title="dripy.pason.PasonData.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code></a> attribute.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pason_data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;rpm&#39;</span><span class="p">][</span><span class="mi">1000</span><span class="p">:</span><span class="mi">1002</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="go">array([84.95, 83.89])</span>
 </pre></div>
@@ -194,119 +291,119 @@
 </pre></div>
 </div>
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.filename">
-<code class="sig-name descname">filename</code><a class="headerlink" href="#dripy.dripy.PasonData.filename" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.filename">
+<code class="sig-name descname">filename</code><a class="headerlink" href="#dripy.pason.PasonData.filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the file from which Pason data was loaded.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.wob">
-<code class="sig-name descname">wob</code><a class="headerlink" href="#dripy.dripy.PasonData.wob" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.wob">
+<code class="sig-name descname">wob</code><a class="headerlink" href="#dripy.pason.PasonData.wob" title="Permalink to this definition">¶</a></dt>
 <dd><p>Weight on bit signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.rpm">
-<code class="sig-name descname">rpm</code><a class="headerlink" href="#dripy.dripy.PasonData.rpm" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.rpm">
+<code class="sig-name descname">rpm</code><a class="headerlink" href="#dripy.pason.PasonData.rpm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotary RPM signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.flow">
-<code class="sig-name descname">flow</code><a class="headerlink" href="#dripy.dripy.PasonData.flow" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.flow">
+<code class="sig-name descname">flow</code><a class="headerlink" href="#dripy.pason.PasonData.flow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mud flow rate signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.torque">
-<code class="sig-name descname">torque</code><a class="headerlink" href="#dripy.dripy.PasonData.torque" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.torque">
+<code class="sig-name descname">torque</code><a class="headerlink" href="#dripy.pason.PasonData.torque" title="Permalink to this definition">¶</a></dt>
 <dd><p>Surface torque signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.md">
-<code class="sig-name descname">md</code><a class="headerlink" href="#dripy.dripy.PasonData.md" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.md">
+<code class="sig-name descname">md</code><a class="headerlink" href="#dripy.pason.PasonData.md" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measured depth signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.rop">
-<code class="sig-name descname">rop</code><a class="headerlink" href="#dripy.dripy.PasonData.rop" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.rop">
+<code class="sig-name descname">rop</code><a class="headerlink" href="#dripy.pason.PasonData.rop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rate of penetration signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.pressure">
-<code class="sig-name descname">pressure</code><a class="headerlink" href="#dripy.dripy.PasonData.pressure" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.pressure">
+<code class="sig-name descname">pressure</code><a class="headerlink" href="#dripy.pason.PasonData.pressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Differential pressure signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.mse">
-<code class="sig-name descname">mse</code><a class="headerlink" href="#dripy.dripy.PasonData.mse" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.mse">
+<code class="sig-name descname">mse</code><a class="headerlink" href="#dripy.pason.PasonData.mse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mechanical specific energy signal</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.units">
-<code class="sig-name descname">units</code><a class="headerlink" href="#dripy.dripy.PasonData.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dictionary indicicating the units associated with each column in <a class="reference internal" href="#dripy.dripy.PasonData.data" title="dripy.dripy.PasonData.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code></a></p>
+<dt id="dripy.pason.PasonData.units">
+<code class="sig-name descname">units</code><a class="headerlink" href="#dripy.pason.PasonData.units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary indicicating the units associated with each column in <a class="reference internal" href="#dripy.pason.PasonData.data" title="dripy.pason.PasonData.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.data">
-<code class="sig-name descname">data</code><a class="headerlink" href="#dripy.dripy.PasonData.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pandas DataFrame containing all the data from <a class="reference internal" href="#dripy.dripy.PasonData.filename" title="dripy.dripy.PasonData.filename"><code class="xref py py-attr docutils literal notranslate"><span class="pre">filename</span></code></a>.</p>
+<dt id="dripy.pason.PasonData.data">
+<code class="sig-name descname">data</code><a class="headerlink" href="#dripy.pason.PasonData.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pandas DataFrame containing all the data from <a class="reference internal" href="#dripy.pason.PasonData.filename" title="dripy.pason.PasonData.filename"><code class="xref py py-attr docutils literal notranslate"><span class="pre">filename</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>pandas.core.frame.DataFrame</p>
@@ -315,29 +412,29 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.STANDARD_SIGNALS">
-<code class="sig-name descname">STANDARD_SIGNALS</code><a class="headerlink" href="#dripy.dripy.PasonData.STANDARD_SIGNALS" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.STANDARD_SIGNALS">
+<code class="sig-name descname">STANDARD_SIGNALS</code><a class="headerlink" href="#dripy.pason.PasonData.STANDARD_SIGNALS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class attribute with standard signal name as keys and lists of expected names in the pason csv files as values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.MAX_TIME_DEC">
-<code class="sig-name descname">MAX_TIME_DEC</code><em class="property"> = 2</em><a class="headerlink" href="#dripy.dripy.PasonData.MAX_TIME_DEC" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.MAX_TIME_DEC">
+<code class="sig-name descname">MAX_TIME_DEC</code><em class="property"> = 2</em><a class="headerlink" href="#dripy.pason.PasonData.MAX_TIME_DEC" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.SETPOINT_FILTER_CUTOFF">
-<code class="sig-name descname">SETPOINT_FILTER_CUTOFF</code><em class="property"> = 0.1</em><a class="headerlink" href="#dripy.dripy.PasonData.SETPOINT_FILTER_CUTOFF" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.SETPOINT_FILTER_CUTOFF">
+<code class="sig-name descname">SETPOINT_FILTER_CUTOFF</code><em class="property"> = 0.1</em><a class="headerlink" href="#dripy.pason.PasonData.SETPOINT_FILTER_CUTOFF" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.SETPOINT_SIGMA">
-<code class="sig-name descname">SETPOINT_SIGMA</code><em class="property"> = 4</em><a class="headerlink" href="#dripy.dripy.PasonData.SETPOINT_SIGMA" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.SETPOINT_SIGMA">
+<code class="sig-name descname">SETPOINT_SIGMA</code><em class="property"> = 4</em><a class="headerlink" href="#dripy.pason.PasonData.SETPOINT_SIGMA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -346,8 +443,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="dripy.dripy.PasonData.get_setpoints">
-<code class="sig-name descname">get_setpoints</code><span class="sig-paren">(</span><em class="sig-param">signal_type</em>, <em class="sig-param">show_plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/dripy.html#PasonData.get_setpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.dripy.PasonData.get_setpoints" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.get_setpoints">
+<code class="sig-name descname">get_setpoints</code><span class="sig-paren">(</span><em class="sig-param">signal_type</em>, <em class="sig-param">show_plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData.get_setpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData.get_setpoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the setpoints from the rpm or gpm Pason signals.</p>
 <p class="rubric">Notes</p>
 <p>This method is experimental.  It is highly recommended to set <cite>show_plot=True</cite> to visually confirm that the extracted setpoints are sensible. This method has been tested on rpm and gpm signals only.  It has not been tested on other types of Pason signals.</p>
@@ -355,29 +452,49 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>signal_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – ‘rpm’ or ‘gpm’</p></li>
-<li><p><strong>show_plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, shows a plot of the resulting setpoints (the default is True)</p></li>
+<li><p><strong>signal_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – ‘rpm’, ‘gpm’, or ‘wob’</p></li>
+<li><p><strong>show_plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, shows a plot of the resulting setpoints (the default is True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>List of tuples where each tuple contains the setpoint time and setpoint value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dripy.dripy.PasonData.plt">
-<code class="sig-name descname">plt</code><em class="property"> = &lt;module 'matplotlib.pyplot' from 'c:\\users\\bthornt\\code\\dripy\\env\\lib\\site-packages\\matplotlib\\pyplot.py'&gt;</em><a class="headerlink" href="#dripy.dripy.PasonData.plt" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.plt">
+<code class="sig-name descname">plt</code><em class="property"> = &lt;module 'matplotlib.pyplot' from 'c:\\users\\bthornt\\code\\dripy\\env\\lib\\site-packages\\matplotlib\\pyplot.py'&gt;</em><a class="headerlink" href="#dripy.pason.PasonData.plt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="dripy.pason.PasonData.slice_at_times">
+<code class="sig-name descname">slice_at_times</code><span class="sig-paren">(</span><em class="sig-param">i_start</em>, <em class="sig-param">i_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData.slice_at_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData.slice_at_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>:class:PasonData</cite> object sliced at the provided times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to start the slice at.</p></li>
+<li><p><strong>i_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to end the slice at.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sliced <cite>:class:PasonData</cite> object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dripy.pason.PasonData" title="dripy.pason.PasonData">PasonData</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="dripy.dripy.pason_post_processing">
-<code class="sig-prename descclassname">dripy.dripy.</code><code class="sig-name descname">pason_post_processing</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">sig</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/dripy.html#pason_post_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.dripy.pason_post_processing" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.pason_post_processing">
+<code class="sig-prename descclassname">dripy.pason.</code><code class="sig-name descname">pason_post_processing</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">sig</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#pason_post_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.pason_post_processing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a signal as it would be processed by pason</p>
 <dl class="simple">
 <dt>This function applies the following processing steps:</dt><dd><ol class="arabic simple">
@@ -391,125 +508,45 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Time series corresponding to the signal to be processed</p></li>
-<li><p><strong>sig</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Signal to be processed</p></li>
+<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Time series corresponding to the signal to be processed</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Signal to be processed</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>time, processed signal</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="dripy.pason.slice_step_tests">
+<code class="sig-prename descclassname">dripy.pason.</code><code class="sig-name descname">slice_step_tests</code><span class="sig-paren">(</span><em class="sig-param">pason</em>, <em class="sig-param">step_test_times</em>, <em class="sig-param">include_tagging_bottom=False</em>, <em class="sig-param">expand_forward=None</em>, <em class="sig-param">expand_backward=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#slice_step_tests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.slice_step_tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slices the step test data out of the pason data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pason</strong> (<a class="reference internal" href="#dripy.pason.PasonData" title="dripy.pason.PasonData"><em>PasonData</em></a>) – <cite>:class:PasonData</cite> object</p></li>
+<li><p><strong>step_test_times</strong> (<em>list of lists of strs</em>) – list of pairs of date strings containing the start and end times of the slice</p></li>
+<li><p><strong>include_tagging_bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em> (</em><em>Optional</em><em>)</em>) – If True, slices the test starting at the preceeding bottom tag time</p></li>
+<li><p><strong>expand_forward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> (</em><em>Optional</em><em>)</em>) – Number of seconds to expand slice forward in time</p></li>
+<li><p><strong>expand_backward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> (</em><em>Optional</em><em>)</em>) – Number of seconds to expand slice backward in time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sliced <cite>:class:PasonData</cite> object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dripy.pason.PasonData" title="dripy.pason.PasonData">PasonData</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
-<div class="section" id="module-dripy.survey">
-<span id="dripy-survey-module"></span><h2>dripy.survey module<a class="headerlink" href="#module-dripy.survey" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="dripy.survey.SurveyData">
-<em class="property">class </em><code class="sig-prename descclassname">dripy.survey.</code><code class="sig-name descname">SurveyData</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">vendor='leam'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/survey.html#SurveyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.survey.SurveyData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Stores data from a well survey.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Filename of raw survey data file.  Can be in excel format or csv format.</p></li>
-<li><p><strong>vendor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Vendor that produced the file.  This determines the expected format of the file.  For options see the keys of <a class="reference internal" href="#dripy.survey.SurveyData.VENDOR_SETTINGS" title="dripy.survey.SurveyData.VENDOR_SETTINGS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">VENDOR_SETTINGS</span></code></a>.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.x">
-<code class="sig-name descname">x</code><a class="headerlink" href="#dripy.survey.SurveyData.x" title="Permalink to this definition">¶</a></dt>
-<dd><p>x coordinates of wellbore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.y">
-<code class="sig-name descname">y</code><a class="headerlink" href="#dripy.survey.SurveyData.y" title="Permalink to this definition">¶</a></dt>
-<dd><p>y coordinates of wellbore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.z">
-<code class="sig-name descname">z</code><a class="headerlink" href="#dripy.survey.SurveyData.z" title="Permalink to this definition">¶</a></dt>
-<dd><p>z coordinates of wellbore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.tvd">
-<code class="sig-name descname">tvd</code><a class="headerlink" href="#dripy.survey.SurveyData.tvd" title="Permalink to this definition">¶</a></dt>
-<dd><p>True vertical depth of wellbore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.md">
-<code class="sig-name descname">md</code><a class="headerlink" href="#dripy.survey.SurveyData.md" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measured depth of wellbore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.Series</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dripy.survey.SurveyData.VENDOR_SETTINGS">
-<code class="sig-name descname">VENDOR_SETTINGS</code><a class="headerlink" href="#dripy.survey.SurveyData.VENDOR_SETTINGS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class attribute containing information about how the survey file should be read depending on what vendor provided it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">VENDOR_SETTINGS</code><em class="property"> = {'leam': {'column_names': {'md': 'MD', 'x': 'N-S ', 'y': 'E-W ', 'z': 'TVD'}, 'read_settings': {'header': 0, 'skiprows': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14]}}}</em></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="dripy.survey.SurveyData.plot_3d">
-<code class="sig-name descname">plot_3d</code><span class="sig-paren">(</span><em class="sig-param">figure=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/survey.html#SurveyData.plot_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.survey.SurveyData.plot_3d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots the survey data on a 3d</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>figure</strong> (<em>matplotlib.figure.Figure</em><em>, </em><em>optional</em>) – An existing  (the default is None, which [default_description])</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>3D plot of wellbore</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib.figure.Figure</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="dripy-survey-module">
+<h2>dripy.survey module<a class="headerlink" href="#dripy-survey-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-dripy">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dripy" title="Permalink to this headline">¶</a></h2>

@@ -46,19 +46,25 @@ class SurveyData():
         }
     }
 
-    def __init__(self, filename, vendor='leam'):
-        if filename.endswith('.csv'):
-            self.data = pandas.read_csv(filename, **self.VENDOR_SETTINGS[vendor]['read_settings'])
-        elif filename.endswith('.xls') or filename.endswith('.xlsx'):
-            self.data = pandas.read_excel(filename, **self.VENDOR_SETTINGS[vendor]['read_settings'])
-        
-        self.data.dropna(subset=[self.VENDOR_SETTINGS[vendor]['column_names']['md']], inplace=True)
+    def __init__(self, filename, vendor='leam', _corva_params=None):
 
-        self.x = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['x']]
-        self.y = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['y']]        
-        self.z = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['z']]        
-        self.tvd = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['z']]
-        self.md = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['md']]
+        if _corva_params is None:
+            if filename.endswith('.csv'):
+                self.data = pandas.read_csv(filename, **self.VENDOR_SETTINGS[vendor]['read_settings'])
+            elif filename.endswith('.xls') or filename.endswith('.xlsx'):
+                self.data = pandas.read_excel(filename, **self.VENDOR_SETTINGS[vendor]['read_settings'])
+            
+            self.data.dropna(subset=[self.VENDOR_SETTINGS[vendor]['column_names']['md']], inplace=True)
+
+            self.x = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['x']]
+            self.y = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['y']]        
+            self.z = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['z']]        
+            self.tvd = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['z']]
+            self.md = self.data[self.VENDOR_SETTINGS[vendor]['column_names']['md']]
+        
+        else:
+
+
         
     def plot_3d(self, figure=None):
         """Plots the survey data on a 3d

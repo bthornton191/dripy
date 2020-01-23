@@ -1,10 +1,10 @@
 # ---------------------
-version = '0.1.4'
-version_notes = 'Updated documentation'
-date = 'August 6th, 2019'
+version = '0.2'
+version_notes = 'Added class for lodestar data.  Added support for Corva.'
+date = 'January 23rd, 2020'
 # ---------------------
 author = 'Ben Thornton'
 author_email = 'ben.thornton@mscsoftware.com'
 name = 'dripy'
-install_requires = ['thornpy', 'numpy', 'pandas', 'scipy', 'matplotlib']
+install_requires = ['thornpy', 'numpy', 'pandas', 'scipy', 'matplotlib', 'lasio']
 description = 'Python tools for working with drilling data'
