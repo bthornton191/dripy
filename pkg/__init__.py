@@ -1,6 +1,6 @@
 # ---------------------
-version = '0.2.2'
-version_notes = 'Added support for getting a lodestar object from a pickle file'
+version = '0.2.3'
+version_notes = 'fixed minor bug'
 date = 'January 28th, 2020'
 # ---------------------
 author = 'Ben Thornton'

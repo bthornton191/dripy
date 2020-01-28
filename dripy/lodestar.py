@@ -94,7 +94,7 @@ class LodeStarData():
 
         """
         if len(args) == 0 or not os.path.isfile(os.path.join(os.path.dirname(args[0]), '.' + os.path.splitext(os.path.split(args[0])[-1])[0] + '.pkl')):
-            inst = super(LodeStarData, cls).__new__(cls)
+            inst = super().__new__(cls)
             inst._came_from_pickle = False
         
         else:
@@ -160,6 +160,9 @@ class _SlicedLodeStarData(LodeStarData):
         if shift_time is True:
             self.data.index = self.data.index - self.data.index[0]
             self.time = self.time - self.time[0]
+    
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
 
 def combine_with_pason(lodestar_dataframe, pason_dataframe, pickle_file=None):
     """Combine a pandas `:obj:DataFrame` containing Lodestar data with a pandas `:obj:DataFrame` containing Pason Data.
