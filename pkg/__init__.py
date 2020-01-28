@@ -1,7 +1,7 @@
 # ---------------------
-version = '0.2.1'
-version_notes = 'Added class for lodestar data.  Added support for Corva. Updated version number.'
-date = 'January 23rd, 2020'
+version = '0.2.2'
+version_notes = 'Added support for getting a lodestar object from a pickle file'
+date = 'January 28th, 2020'
 # ---------------------
 author = 'Ben Thornton'
 author_email = 'ben.thornton@mscsoftware.com'

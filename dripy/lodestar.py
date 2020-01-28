@@ -1,5 +1,6 @@
 import os
 import re
+import pickle
 from numpy import argmax
 import pandas as pd
 
@@ -14,61 +15,95 @@ class LodeStarData():
     
     MAX_TIME_DEC = 4
 
-    def __init__(self, filename, stack_order=None, date_parser=None):
-        self.filename = filename
-        self.name = os.path.splitext(os.path.split(filename)[-1])[0]
-        self.torque = []
-        self.rpm = []
-        self.wob = []
-        self.moment = []
-        self.stack_order = stack_order
-        self.units = {}
+    def __init__(self, filename, stack_order=None, date_parser=None, write_pickle=True):
+        if self._came_from_pickle is False: #pylint:disable=access-member-before-definition
+            self.filename = filename
+            self.name = os.path.splitext(os.path.split(filename)[-1])[0]
+            self.torque = []
+            self.rpm = []
+            self.wob = []
+            self.moment = []
+            self.stack_order = stack_order
+            self.units = {}
+            self._came_from_pickle = False
 
-        # Read the csv file
-        self.data = pd.read_csv(filename, sep=',', parse_dates=[0], date_parser=date_parser, infer_datetime_format=True)
+            # Read the csv file
+            self.data = pd.read_csv(filename, sep=',', parse_dates=[0], date_parser=date_parser, infer_datetime_format=True)
 
-        # Create a time series and attribute and set it as the index
-        self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()  
-        
-        # Round the time signal to get rid of random decimals
-        self.data['time'] = self.data['time'].round(decimals=self.MAX_TIME_DEC)
-        
-        self.time = list(self.data['time'].values)
-        self.units['time'] = 'sec'
-        self.data.set_index('time', inplace=True)
-
-        # Get new column names and units
-        name_map = {}        
-        for col_name in self.data:
-            # For each column name, parse the name
-            [new_col_name, *unit] = [text.strip().replace(' ','_').lower() for text in re.split('[()]', col_name)]
-            name_map[col_name] = new_col_name
+            # Create a time series and attribute and set it as the index
+            self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()  
             
-            if unit:
-                # If the column name contains units
-                # Add to the units dictionary
-                self.units[new_col_name] = unit[0]
+            # Round the time signal to get rid of random decimals
+            self.data['time'] = self.data['time'].round(decimals=self.MAX_TIME_DEC)
+            
+            self.time = list(self.data['time'].values)
+            self.units['time'] = 'sec'
+            self.data.set_index('time', inplace=True)
+
+            # Get new column names and units
+            name_map = {}        
+            for col_name in self.data:
+                # For each column name, parse the name
+                [new_col_name, *unit] = [text.strip().replace(' ','_').lower() for text in re.split('[()]', col_name)]
+                name_map[col_name] = new_col_name
+                
+                if unit:
+                    # If the column name contains units
+                    # Add to the units dictionary
+                    self.units[new_col_name] = unit[0]
+            
+            # Rename the columns
+            self.data.rename(columns=name_map, inplace=True)
+            
+            # Extract standard variables
+            for var, expct_col_nms in self.STANDARD_SIGNALS.items():
+                # For each standard variable
+
+                for expct_col_nm in expct_col_nms:
+                    # For each possible pason column name representing the standard variable
+
+                    if expct_col_nm in self.data:
+                        # If the column name is in the pason data set, copy 
+                        # that column to a new dict entry and create
+                        # an instance attribute for it.
+                        self.data[var] = self.data[expct_col_nm]
+                        self.__dict__[var] = list(self.data[expct_col_nm].values)
+
+                        if expct_col_nm in self.units:
+                            # If the column has units, add to the units dict
+                            self.units[var] = self.units[expct_col_nm]
+            
+            # Write the pickle file
+            if write_pickle is True:
+                pickle_filename = os.path.join(os.path.dirname(filename), '.' + os.path.splitext(os.path.split(filename)[-1])[0] + '.pkl')
+                with open(pickle_filename, 'wb') as fid:
+                    pickle.dump(self, fid)
+    
+    def __new__(cls, *args, **kwargs):
+        """Overriden to look for a pickle file in the same directory as `:arg:filename` with the filename .`:arg:filename`.pkl.
         
-        # Rename the columns
-        self.data.rename(columns=name_map, inplace=True)
+        Parameters
+        ----------
+        filename : str
+            Filename of lodestar data
         
-        # Extract standard variables
-        for var, expct_col_nms in self.STANDARD_SIGNALS.items():
-            # For each standard variable
+        Returns
+        -------
+        LodeStarData
+            The instantiated `:class:LodeStarData` object.
 
-            for expct_col_nm in expct_col_nms:
-                # For each possible pason column name representing the standard variable
-
-                if expct_col_nm in self.data:
-                    # If the column name is in the pason data set, copy 
-                    # that column to a new dict entry and create
-                    # an instance attribute for it.
-                    self.data[var] = self.data[expct_col_nm]
-                    self.__dict__[var] = list(self.data[expct_col_nm].values)
-
-                    if expct_col_nm in self.units:
-                        # If the column has units, add to the units dict
-                        self.units[var] = self.units[expct_col_nm]
+        """
+        if len(args) == 0 or not os.path.isfile(os.path.join(os.path.dirname(args[0]), '.' + os.path.splitext(os.path.split(args[0])[-1])[0] + '.pkl')):
+            inst = super(LodeStarData, cls).__new__(cls)
+            inst._came_from_pickle = False
+        
+        else:
+            pickle_filename = os.path.join(os.path.dirname(args[0]), '.' + os.path.splitext(os.path.split(args[0])[-1])[0] + '.pkl')        
+            with open(pickle_filename, 'rb') as fid:
+                inst = pickle.load(fid)
+            inst._came_from_pickle = True
+        
+        return inst
     
     def slice_at_indices(self, i_start, i_end, shift_time=True):
         """Returns a `:class:LodeStarData` object sliced at the provided times
