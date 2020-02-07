@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dripy.pason &mdash; dripy 0.2.3 documentation</title>
+  <title>dripy.pason &mdash; dripy 0.2.4 documentation</title>
   
 
   
@@ -368,7 +368,27 @@
 
         <span class="k">return</span> <span class="n">set_points</span></div>
     
-<div class="viewcode-block" id="PasonData.slice_at_times"><a class="viewcode-back" href="../../dripy.html#dripy.pason.PasonData.slice_at_times">[docs]</a>    <span class="k">def</span> <span class="nf">slice_at_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">):</span>
+<div class="viewcode-block" id="PasonData.slice_at_times"><a class="viewcode-back" href="../../dripy.html#dripy.pason.PasonData.slice_at_times">[docs]</a>    <span class="k">def</span> <span class="nf">slice_at_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">shift_time</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a `:class:PasonData` object sliced at the provided times</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t_start : float</span>
+<span class="sd">            Time to start the slice at.</span>
+<span class="sd">        t_end : float</span>
+<span class="sd">            Time to end the slice at.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PasonData</span>
+<span class="sd">            Sliced `:class:PasonData` object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">i_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">t_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">i_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">t_end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slice_at_indices</span><span class="p">(</span><span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">,</span> <span class="n">shift_time</span><span class="o">=</span><span class="n">shift_time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PasonData.slice_at_indices"><a class="viewcode-back" href="../../dripy.html#dripy.pason.PasonData.slice_at_indices">[docs]</a>    <span class="k">def</span> <span class="nf">slice_at_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">,</span> <span class="n">shift_time</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a `:class:PasonData` object sliced at the provided times</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
@@ -384,11 +404,11 @@
 <span class="sd">            Sliced `:class:PasonData` object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_SlicedPasonData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">_SlicedPasonData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">,</span> <span class="n">shift_time</span><span class="p">)</span></div></div>
 
 <span class="k">class</span> <span class="nc">_SlicedPasonData</span><span class="p">(</span><span class="n">PasonData</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pason_data</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pason_data</span><span class="p">,</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_end</span><span class="p">,</span> <span class="n">shift_time</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">pason_data</span><span class="o">.</span><span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wob</span> <span class="o">=</span> <span class="n">pason_data</span><span class="o">.</span><span class="n">wob</span><span class="p">[</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_end</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
@@ -405,8 +425,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pason_data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_end</span><span class="p">]</span>
 
         <span class="c1"># Zero time signal</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">shift_time</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <div class="viewcode-block" id="pason_post_processing"><a class="viewcode-back" href="../../dripy.html#dripy.pason.pason_post_processing">[docs]</a><span class="k">def</span> <span class="nf">pason_post_processing</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

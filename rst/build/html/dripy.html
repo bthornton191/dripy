@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dripy package &mdash; dripy 0.2.3 documentation</title>
+  <title>dripy package &mdash; dripy 0.2.4 documentation</title>
   
 
   
@@ -471,14 +471,34 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="dripy.pason.PasonData.slice_at_times">
-<code class="sig-name descname">slice_at_times</code><span class="sig-paren">(</span><em class="sig-param">i_start</em>, <em class="sig-param">i_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData.slice_at_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData.slice_at_times" title="Permalink to this definition">¶</a></dt>
+<dt id="dripy.pason.PasonData.slice_at_indices">
+<code class="sig-name descname">slice_at_indices</code><span class="sig-paren">(</span><em class="sig-param">i_start</em>, <em class="sig-param">i_end</em>, <em class="sig-param">shift_time=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData.slice_at_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData.slice_at_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <cite>:class:PasonData</cite> object sliced at the provided times</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>i_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to start the slice at.</p></li>
 <li><p><strong>i_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index to end the slice at.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sliced <cite>:class:PasonData</cite> object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dripy.pason.PasonData" title="dripy.pason.PasonData">PasonData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="dripy.pason.PasonData.slice_at_times">
+<code class="sig-name descname">slice_at_times</code><span class="sig-paren">(</span><em class="sig-param">t_start</em>, <em class="sig-param">t_end</em>, <em class="sig-param">shift_time=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dripy/pason.html#PasonData.slice_at_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dripy.pason.PasonData.slice_at_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>:class:PasonData</cite> object sliced at the provided times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Time to start the slice at.</p></li>
+<li><p><strong>t_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Time to end the slice at.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

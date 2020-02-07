@@ -32,7 +32,7 @@ class Test_LodeStarData(unittest.TestCase):
         self.assertListEqual(compare_objects(self.lodestar, self.lodestar_from_pickle), ['Value of _came_from_pickle attribute differs. object_1._came_from_pickle = False, object_2._came_from_pickle = True'])
     
     def test_slicing(self):
-        sliced_lodestar = self.lodestar_from_pickle.slice_at_times(5,10)
+        sliced_lodestar = self.lodestar_from_pickle.slice_at_indices(5,10)
         self.assertTrue(True)
 
     @classmethod

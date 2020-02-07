@@ -225,7 +225,27 @@ class PasonData():
 
         return set_points
     
-    def slice_at_times(self, i_start, i_end):
+    def slice_at_times(self, t_start, t_end, shift_time=True):
+        """Returns a `:class:PasonData` object sliced at the provided times
+        
+        Parameters
+        ----------
+        t_start : float
+            Time to start the slice at.
+        t_end : float
+            Time to end the slice at.
+        
+        Returns
+        -------
+        PasonData
+            Sliced `:class:PasonData` object.
+
+        """
+        i_start = self.time.index(list(filter(lambda i: i >= t_start, self.time))[0])
+        i_end = self.time.index(list(filter(lambda i: i >= t_end, self.time))[0])
+        return self.slice_at_indices(i_start, i_end, shift_time=shift_time)
+
+    def slice_at_indices(self, i_start, i_end, shift_time=True):
         """Returns a `:class:PasonData` object sliced at the provided times
         
         Parameters
@@ -241,11 +261,11 @@ class PasonData():
             Sliced `:class:PasonData` object.
 
         """
-        return _SlicedPasonData(self, i_start, i_end)
+        return _SlicedPasonData(self, i_start, i_end, shift_time)
 
 class _SlicedPasonData(PasonData):
 
-    def __init__(self, pason_data, i_start, i_end):
+    def __init__(self, pason_data, i_start, i_end, shift_time=True):
         
         self.filename = pason_data.filename
         self.wob = pason_data.wob[i_start:i_end+1]
@@ -262,8 +282,9 @@ class _SlicedPasonData(PasonData):
         self.data = pason_data.data[i_start:i_end]
 
         # Zero time signal
-        self.data.index = self.data.index - self.data.index[0]
-        self.time = self.time - self.time[0]
+        if shift_time is True:
+            self.data.index = self.data.index - self.data.index[0]
+            self.time = self.time - self.time[0]
 
 def pason_post_processing(t, sig):
     """
