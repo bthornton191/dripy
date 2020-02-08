@@ -1,6 +1,6 @@
 # ---------------------
-version = '0.2.4'
-version_notes = 'added slice at times to PasonData'
+version = '0.2.5'
+version_notes = 'minor bug fix'
 date = 'February 7th, 2020'
 # ---------------------
 author = 'Ben Thornton'

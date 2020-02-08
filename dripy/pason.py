@@ -279,7 +279,7 @@ class _SlicedPasonData(PasonData):
         self.time = pason_data.time[i_start:i_end+1]
         self.units = pason_data.units
 
-        self.data = pason_data.data[i_start:i_end]
+        self.data = pason_data.data.iloc[i_start:i_end+1]
 
         # Zero time signal
         if shift_time is True:

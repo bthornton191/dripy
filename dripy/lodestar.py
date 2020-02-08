@@ -153,8 +153,8 @@ class _SlicedLodeStarData(LodeStarData):
         self.time = lodestar_data.time[i_start:i_end+1]
         self.units = lodestar_data.units
         self.stack_order = lodestar_data.stack_order
-
-        self.data = lodestar_data.data[i_start:i_end]
+        
+        self.data = lodestar_data.data.iloc[i_start:i_end+1]
 
         # Zero time signal
         if shift_time is True:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dripy.lodestar &mdash; dripy 0.2.4 documentation</title>
+  <title>dripy.lodestar &mdash; dripy 0.2.5 documentation</title>
   
 
   
@@ -296,8 +296,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">lodestar_data</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_end</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">lodestar_data</span><span class="o">.</span><span class="n">units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stack_order</span> <span class="o">=</span> <span class="n">lodestar_data</span><span class="o">.</span><span class="n">stack_order</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lodestar_data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_end</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lodestar_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_end</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Zero time signal</span>
         <span class="k">if</span> <span class="n">shift_time</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
