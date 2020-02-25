@@ -149,8 +149,8 @@ class PasonData():
         for var, expct_col_nms in self.STANDARD_SIGNALS.items():
             # For each standard variable
 
-            for expct_col_nm in expct_col_nms:
-                # For each possible pason column name representing the standard variable
+            for expct_col_nm in expct_col_nms + [nm.replace('_', '') for nm in expct_col_nms]:
+                # For each possible pason column name representing the standard variable + column name with '_' removed
 
                 if expct_col_nm in self.data:
                     # If the column name is in the pason data set, copy 
