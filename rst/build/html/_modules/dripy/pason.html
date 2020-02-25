@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dripy.pason &mdash; dripy 0.2.6 documentation</title>
+  <title>dripy.pason &mdash; dripy 0.2.7 documentation</title>
   
 
   
@@ -292,8 +292,13 @@
         <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">expct_col_nms</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">STANDARD_SIGNALS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># For each standard variable</span>
 
-            <span class="k">for</span> <span class="n">expct_col_nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span> <span class="o">+</span> <span class="p">[</span><span class="n">nm</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span><span class="p">]:</span>
-                <span class="c1"># For each possible pason column name representing the standard variable + column name with &#39;_&#39; removed</span>
+            <span class="c1"># Add uppercase, lowercase, and without underscores</span>
+            <span class="n">expct_col_nms</span> <span class="o">=</span> <span class="p">[</span><span class="n">nm</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span><span class="p">]</span>
+            <span class="n">expct_col_nms</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nm</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span><span class="p">]</span>
+            <span class="n">expct_col_nms</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nm</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">expct_col_nm</span> <span class="ow">in</span> <span class="n">expct_col_nms</span><span class="p">:</span>
+                <span class="c1"># For each possible pason column name representing the standard variable</span>
 
                 <span class="k">if</span> <span class="n">expct_col_nm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
                     <span class="c1"># If the column name is in the pason data set, copy </span>
