@@ -88,7 +88,12 @@ class PasonData():
 
     # Prominence and width thresholds for peakfinder
     # NOTE: Smaller numbers = more peaks
-    SETPOINT_SIGMA = 4
+    SETPOINT_SIGMA = {
+        'wob': 4,
+        'rpm': 4,
+        'gpm': 4,
+        'rop': 4
+    }
 
     # Maximum exptected decimals in timestamp seconds
     MAX_TIME_DEC = 2
@@ -209,7 +214,7 @@ class PasonData():
         deriv_sig = absolute(gradient(filt_sig))
 
         # Get the n sigma value of the derivative
-        n_sigma = std(deriv_sig)*self.SETPOINT_SIGMA
+        n_sigma = std(deriv_sig)*self.SETPOINT_SIGMA[signal_type]
 
         # Find the peaks of the derivative
         peaks, _props = find_peaks(deriv_sig, height=n_sigma, prominence=n_sigma)

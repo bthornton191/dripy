@@ -1,7 +1,6 @@
 import os
 import re
 import pickle
-from numpy import argmax
 import pandas as pd
 
 class LodeStarData():
@@ -15,7 +14,7 @@ class LodeStarData():
     
     MAX_TIME_DEC = 4
 
-    def __init__(self, filename, stack_order=None, date_parser=None, write_pickle=True):
+    def __init__(self, filename, stack_order=None, date_parser=None, write_pickle=True, resample_time=None):
         if self._came_from_pickle is False: #pylint:disable=access-member-before-definition
             self.filename = filename
             self.name = os.path.splitext(os.path.split(filename)[-1])[0]
@@ -30,8 +29,15 @@ class LodeStarData():
             # Read the csv file
             self.data = pd.read_csv(filename, sep=',', parse_dates=[0], date_parser=date_parser, infer_datetime_format=True)
 
+            # Get the date column
+            date_col = self.data.columns[0]
+
+            # Resample
+            if resample_time is not None:
+                self._resample(resample_time, date_col)
+
             # Create a time series and attribute and set it as the index
-            self.data['time'] = (self.data[self.data.columns[0]] - self.data[self.data.columns[0]][0]).dt.total_seconds()  
+            self.data['time'] = (self.data[date_col] - self.data[date_col][0]).dt.total_seconds()  
             
             # Round the time signal to get rid of random decimals
             self.data['time'] = self.data['time'].round(decimals=self.MAX_TIME_DEC)
@@ -78,7 +84,7 @@ class LodeStarData():
                 pickle_filename = os.path.join(os.path.dirname(filename), '.' + os.path.splitext(os.path.split(filename)[-1])[0] + '.pkl')
                 with open(pickle_filename, 'wb') as fid:
                     pickle.dump(self, fid)
-    
+
     def __new__(cls, *args, **kwargs):
         """Overriden to look for a pickle file in the same directory as `:arg:filename` with the filename .`:arg:filename`.pkl.
         
@@ -142,6 +148,42 @@ class LodeStarData():
         i_start = self.time.index(list(filter(lambda i: i >= t_start, self.time))[0])
         i_end = self.time.index(list(filter(lambda i: i >= t_end, self.time))[0])
         return self.slice_at_indices(i_start, i_end, shift_time=shift_time)
+    
+    def _resample(self, resample_time, date_col):
+        """Resamples self.data
+        
+        Parameters
+        ----------
+        resample_time : float
+            New sample time
+        date_col : str
+            Name of DateTime column
+
+        """
+        # Set the index as the date (preserver current)
+        self.data.set_index(date_col, inplace=True)
+
+        # Resample
+        _data = self.data.resample(f'{resample_time}S').asfreq()
+
+        # Join with original
+        _data = _data.join(self.data, lsuffix='_', how='outer')
+
+        for column in [c for c in _data.columns if c.endswith('_')]:
+            # _tmp_df[column].fillna(_tmp_df[column[:-1]], inplace=True)
+            del _data[column]
+
+        _data[date_col] = _data.index.values
+        _data['time'] = (_data[date_col] - _data[date_col][0]).dt.total_seconds()
+
+        _data = _data.apply(pd.Series.interpolate, args=('time',))
+        _data = _data.resample(f'{resample_time}S').asfreq()
+        
+        del _data['time']
+
+        _data.reset_index(drop=True, inplace=True)
+
+        self.data = _data
 
 class _SlicedLodeStarData(LodeStarData):
     def __init__(self, lodestar_data, i_start, i_end, shift_time=True):        
@@ -159,7 +201,7 @@ class _SlicedLodeStarData(LodeStarData):
         # Zero time signal
         if shift_time is True:
             self.data.index = self.data.index - self.data.index[0]
-            self.time = self.time - self.time[0]
+            self.time = list(self.time - self.time[0])
     
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls)
